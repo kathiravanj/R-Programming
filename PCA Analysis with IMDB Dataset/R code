@@ -23,4 +23,3 @@ biplot(pca)
 
 #Show the scores
 pca$scores
-
