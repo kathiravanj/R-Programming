@@ -1,0 +1,49 @@
+I am going to use a glass dataset from http://archive.ics.uci.edu. 
+This dataset contains 7 types of glasses with 9 attributes as below,
+   RI: refractive index
+   Na: Sodium (unit measurement: weight percent in corresponding oxide)
+   Mg: Magnesium
+   Al: Aluminum
+   Si: Silicon
+   K: Potassium
+   Ca: Calcium
+   Ba: Barium
+   Fe: Iron
+
+I chose this dataset for SVM because this dataset is classified by glass types and there is an opportunity to predict the glass type based on the RI and chemical contents.
+After installing the packages, I have loaded the data and then plotted it to look at which combination of attributes is showing better classification.
+The best separation is seen between Mg and Ca contents. So, let me plot that combination.
+Now, let me create the SVM model with the training dataset and predict the glass type based on Mg and Ca content. 
+I could see the classification into 4 clearly though all the 7 types are not visible.
+After tuning the model,
+Parameter tuning of ‘svm’:
+
+- sampling method: 10-fold cross validation 
+
+- best parameters:
+ cost
+    1
+
+- best performance: 1.279134 
+
+- Detailed performance results:
+   cost    error dispersion
+1 1e-03 4.545682  2.7246108
+2 1e-02 2.212568  1.5548473
+3 1e-01 1.297890  0.7368478
+4 1e+00 1.279134  0.7165203
+5 1e+01 1.279189  0.7101215
+6 1e+02 1.279176  0.7105483
+
+Retaining the same cost value, let me predict the testing set as below,
+
+p    1  2  3  5  6  7
+  1  7  4  0  0  0  1
+  2 15 19  2  2  2  2
+  3  0  0  0  0  0  0
+  5  0  1  0  0  1  0
+  6  0  0  0  0  0  0
+  7  0  0  0  1  0  7
+[1] 0.515625
+
+I also tried with cost 1 and 10. However, .1 looks efficient and predicts better results and yields 51% of accuracy which is the maximum I could get with repetitive iterations. Type 1, 2 and 7 are predicted well based on the table data.
