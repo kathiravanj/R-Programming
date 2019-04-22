@@ -1,0 +1,33 @@
+#package installation
+install.packages("tm")
+install.packages("wordcloud")
+library(tm)
+library(wordcloud)
+
+#setting up source and corpus
+data <- read.csv("C:/python/Thirukural.csv")
+data_text <- paste(data$Translation, collapse = " ")
+data_source <- VectorSource(data_text)
+corpus <- Corpus(data_source)
+
+#cleaning
+corpus <- tm_map(corpus, content_transformer(tolower))
+corpus <- tm_map(corpus, removePunctuation)
+corpus <- tm_map(corpus, stripWhitespace)
+corpus <- tm_map(corpus, removeWords, stopwords("english"))
+
+#document Matrix
+doct <- DocumentTermMatrix(corpus)
+doct2 <- as.matrix(doct)
+
+#find most frequent words
+freq <- colSums(doct2)
+freq <- sort(freq, decreasing = TRUE)
+head(freq)
+freq
+
+
+#wordcloud
+words <- names(freq)
+wordcloud(words[1:100], freq[1:100])
+
