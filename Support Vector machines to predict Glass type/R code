@@ -1,0 +1,37 @@
+#install package
+#install.packages("e1071")
+#library(e1071)
+
+#Load the data
+glass <- read.csv("C:/python/glass.csv")
+names(glass)
+nrow(glass)
+head(glass)
+plot(glass)
+
+#plot the dataset
+plot(glass, col = glass$Type)
+
+#plot Mg and Ca
+plot(glass$Mg, glass$Ca, col = glass$Type)
+
+#split the dataset into training and testing
+s<- sample(214, 150)
+col <- c("Mg","Ca","Type")
+glass_train <- glass[s,col]
+glass_test <- glass[-s,col]
+
+#create svm model
+svm_model <- svm(Type ~., data = glass_train, kernel = "linear", type="C-classification", cost = .1, scale = FALSE)
+print(svm_model)
+plot(svm_model,glass_train[,col])
+
+#tune
+tuned <- tune(svm, Type ~., data = glass_train, kernel = "linear", ranges = list(cost=c(0.001, 0.01, 0.1, 1, 10, 100)))
+summary(tuned)
+
+#predict
+p <- predict(svm_model, glass_test[,col], type="class")
+plot(p)
+table(p,glass_test[,3])
+mean(p==glass_test[,3])
